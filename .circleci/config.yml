@@ -1,0 +1,76 @@
+steps: &steps
+  steps:
+    - ansible/ansible-playbook:
+        reponame: ansible_joke-programs_beer-mug
+    - run:
+        name: Initialize beer-mug settings
+        command: beer-mug init
+    - run:
+        name: Star beer-mug
+        command: beer-mug start
+    - run:
+        name: Sleep 3 seconds
+        command: sleep 3
+    - run:
+        name: Stop beer-mug
+        command: beer-mug end
+    - run:
+        name: Add test user 'beertest' to check if beer-mug command is available to non-root users
+        command: adduser beertest
+    - run:
+        name: Install sudo with yum
+        command: yum -y install sudo
+    - run:
+        name: Initialize beer-mug settings executing as 'beertest'
+        command: |
+          export TERM=xterm
+          sudo -u beertest sh -c "/usr/local/bin/beer-mug init"
+    - run:
+        name: Start beer-mug executing as 'beertest'
+        command: |
+          export TERM=xterm
+          sudo -u beertest sh -c "/usr/local/bin/beer-mug start"
+    - run:
+        name: Sleep 3 seconds
+        command: sleep 3
+    - run:
+        name: Stop beer-mug executing as 'beertest'
+        command: |
+          export TERM=xterm
+          sudo -u beertest sh -c "/usr/local/bin/beer-mug end"
+
+version: 2.1
+
+orbs:
+  ansible: orbss/ansible@0.0.4
+
+jobs:
+  ansible-yum:
+    executor:
+      name: ansible/ansible-yum
+    <<: *steps
+  ansible-stable:
+    executor:
+      name: ansible/ansible-stable
+    <<: *steps
+  ansible-devel:
+    executor:
+      name: ansible/ansible-devel
+    <<: *steps
+
+workflows:
+  version: 2
+  excute-playbook:
+    jobs:
+      - ansible-yum:
+          filters:
+            branches:
+              only: topic
+      - ansible-stable:
+          filters:
+            branches:
+              only: topic
+      - ansible-devel:
+          filters:
+            branches:
+              only: topic

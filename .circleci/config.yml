@@ -1,5 +1,9 @@
 steps: &steps
   steps:
+    - ansible/retrieve-playbook:
+        reponame: ansible_joke-programs_beer-mug
+    - ansible/ansible-lint:
+        reponame: ansible_joke-programs_beer-mug
     - ansible/ansible-playbook:
         reponame: ansible_joke-programs_beer-mug
     - run:
@@ -42,7 +46,7 @@ steps: &steps
 version: 2.1
 
 orbs:
-  ansible: orbss/ansible@0.0.4
+  ansible: orbss/ansible@0.0.8
 
 jobs:
   ansible-yum:

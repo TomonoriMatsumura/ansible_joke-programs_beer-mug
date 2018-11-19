@@ -29,7 +29,6 @@
     GOPATH: /root/.go
     PATH: "/root/.go/bin:{{ ansible_env.PATH }}"
 
-
 - name: Copy beer-mug binary to /usr/loca/bin/
   become: yes
   copy:

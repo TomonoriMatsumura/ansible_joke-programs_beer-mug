@@ -1,7 +1,6 @@
 steps: &steps
   steps:
-    - ansible/retrieve-playbook:
-        reponame: ansible_joke-programs_beer-mug
+    - checkout
     - ansible/ansible-lint:
         reponame: ansible_joke-programs_beer-mug
     - ansible/ansible-playbook:
@@ -46,20 +45,23 @@ steps: &steps
 version: 2.1
 
 orbs:
-  ansible: orbss/ansible@0.0.8
+  ansible: orbss/ansible@volatile
 
 jobs:
   ansible-yum:
     executor:
-      name: ansible/ansible-yum
+      name: ansible/centos7-ansible-yum
+    working_directory: /tmp/ansible
     <<: *steps
   ansible-stable:
     executor:
-      name: ansible/ansible-stable
+      name: ansible/centos7-ansible-stable
+    working_directory: /tmp/ansible
     <<: *steps
   ansible-devel:
     executor:
-      name: ansible/ansible-devel
+      name: ansible/centos7-ansible-devel
+    working_directory: /tmp/ansible
     <<: *steps
 
 workflows:

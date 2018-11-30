@@ -68,15 +68,6 @@ workflows:
   version: 2
   excute-playbook:
     jobs:
-      - ansible-yum:
-          filters:
-            branches:
-              only: topic
-      - ansible-stable:
-          filters:
-            branches:
-              only: topic
-      - ansible-devel:
-          filters:
-            branches:
-              only: topic
+      - ansible-yum
+      - ansible-stable
+      - ansible-devel

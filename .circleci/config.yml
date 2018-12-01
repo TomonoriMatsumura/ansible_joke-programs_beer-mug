@@ -66,7 +66,7 @@ jobs:
 
 workflows:
   version: 2
-  excute-playbook:
+  execute-playbook:
     jobs:
       - ansible-yum
       - ansible-stable

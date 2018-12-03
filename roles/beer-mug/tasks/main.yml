@@ -1,8 +1,15 @@
+- name: Check if beer-mug is installed
+  command: beer-mug -h
+  register: BEERMUG_INSTALLED
+  ignore_errors: yes
+  changed_when: false
+
 - name: Install Golang with yum
   become: yes
   yum:
     name: golang
     state: present
+  when: BEERMUG_INSTALLED is failed
 
 - name: Set path of Golang 1
   become: yes
@@ -10,10 +17,12 @@
     src: go.sh
     dest: /etc/profile.d/go.sh
     force: no
+  when: BEERMUG_INSTALLED is failed
 
 - name: Set path of Golang 2
   become: yes
   shell: source /etc/profile.d/go.sh
+  when: BEERMUG_INSTALLED is failed
 
 - name: Download beer-mug from github
   become: yes
@@ -21,6 +30,7 @@
   environment:
     GOPATH: /root/.go
     PATH: "/root/.go/bin:{{ ansible_env.PATH }}"
+  when: BEERMUG_INSTALLED is failed
 
 - name: Install beer-mug
   become: yes
@@ -28,6 +38,7 @@
   environment:
     GOPATH: /root/.go
     PATH: "/root/.go/bin:{{ ansible_env.PATH }}"
+  when: BEERMUG_INSTALLED is failed
 
 - name: Copy beer-mug binary to /usr/loca/bin/
   become: yes
@@ -37,3 +48,4 @@
     owner: root
     group: root
     mode: 0755
+  when: BEERMUG_INSTALLED is failed

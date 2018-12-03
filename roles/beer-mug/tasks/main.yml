@@ -4,6 +4,13 @@
   ignore_errors: yes
   changed_when: false
 
+- name: Install EPEL (Extra Packages for Enterprise Linux)
+  become: yes
+  yum:
+    name: epel-release
+    state: present
+  when: BEERMUG_INSTALLED is failed
+
 - name: Install Golang with yum
   become: yes
   yum:

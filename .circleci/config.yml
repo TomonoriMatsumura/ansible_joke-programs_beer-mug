@@ -1,10 +1,8 @@
 steps: &steps
   steps:
     - checkout
-    - ansible/ansible-lint:
-        reponame: ansible_joke-programs_beer-mug
-    - ansible/ansible-playbook:
-        reponame: ansible_joke-programs_beer-mug
+    - ansible/ansible-lint
+    - ansible/ansible-playbook
     - run:
         name: Initialize beer-mug settings
         command: beer-mug init
